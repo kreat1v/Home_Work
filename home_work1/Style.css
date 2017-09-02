@@ -1,0 +1,254 @@
+@import url('https://fonts.googleapis.com/css?family=Alice');
+
+/*Общие стили*/
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Alice', serif;
+}
+
+.name,
+.photo,
+.email {
+    display: inline-block;
+}
+
+.name,
+h2 {
+    margin-left: 200px;
+    color: white;
+    letter-spacing: 2px;
+}
+
+/*Ссылки*/
+
+a {
+    text-decoration: none;
+}
+
+.link {
+    border-bottom: 2px solid #e1f4d9;
+    color: black;
+    background-image: linear-gradient(180deg, transparent 65%, #e1f4d9 65%);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 0%;
+}
+.link:hover {background-size: 100% 100%;}
+
+.link a {
+    display: inline-block;
+    transition: .3s ease-in-out;
+}
+
+/*Шапка*/
+
+.photo {
+    background-image: url("img/my_photo.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    float: right;
+    box-shadow: 0 0 20px black;
+    margin: 13px 200px 0 0;
+}
+
+.info {
+    display: inline-block;
+    position: absolute;
+    background-color: #006633;
+    height: 50px;
+    width: 100%;
+    top: 100px;
+    vertical-align: bottom;
+    color: #339966;
+}
+
+.info p {
+    margin-left: 85px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.email a {
+    color: #339966;
+}
+
+.email a:active {
+    color: white;
+}
+
+.social {
+    margin-top: 20px;
+    float: right;
+}
+
+.icon {
+    padding: 0 210px 0 20px;
+}
+
+.icon-fb {
+    background: url("img/facebook.png") no-repeat 50% 50%;
+    width: 24px;
+    height: 24px;
+}
+
+.icon-inst {
+    background: url("img/instagram.png") no-repeat 50% 50%;
+    width: 24px;
+    height: 24px;
+}
+
+.icon-fb:hover,
+.icon-inst:hover {
+    background-size: 20px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0 15px black;
+}
+
+/*Контент*/
+
+main {
+    min-height: calc(92vh - 75px);
+}
+
+main p,
+main li {
+    font-size: 20px;
+}
+
+ul {
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+.position {
+    padding-top: 30px;
+}
+
+.line {
+    position: relative;
+    clear: both;
+}
+
+.caption {
+    background-color: #339966;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    position: relative;
+    z-index: 10;
+    clear: both;
+}
+
+h2 {
+    padding: 15px 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.border {
+    display: block;
+    position: absolute;
+    background-color: #006633;
+    height: 20px;
+    width: 100%;
+    top: 45px;
+}
+
+.left_side {
+    width: 300px;
+    background-color: rgba(197, 233, 183, 0.52);
+    line-height: 35px;
+}
+
+.left_side p {
+    text-align: right;
+    padding: 30px 10px 30px 0;
+}
+
+.right_side,
+.interval {
+    line-height: 35px;
+}
+
+.right_side p {
+    padding-left: 20px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.vector {
+    display: flex;
+    align-content: space-between;
+}
+
+.left_vector {
+    padding-top: 60px;
+    width: 300px;
+    align-self: stretch;
+}
+
+.right_vector {
+    background: url("img/vector.jpg") 300px;
+    background-attachment: fixed;
+    flex-grow: 1;
+    color: #f0f0f0;
+    text-shadow: 0 0 7px #458cff;
+}
+
+.right_vector a {
+    color: #f0f0f0;
+    text-shadow: 0 0 7px #458cff;
+}
+
+/*Подвал*/
+
+footer {
+    position: relative;
+    height: 70px;
+    margin-top: 100px;
+    padding: 0;
+}
+
+.left_footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    z-index: 10;
+}
+
+.square {
+    width: 70px;
+    height: 70px;
+    border-top: 10px solid  #006633;
+    border-left: 10px solid  #006633;
+    border-top-left-radius: 50%;
+    background-color: #339966;
+    margin-left: 300px;
+}
+
+.right_footer {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    background-color: #339966;
+    border-top: 10px solid #006633;
+    height: 70px;
+    width: 100%;
+}
+
+.right_footer p {
+    font-size: 20px;
+    color: white;
+    text-align: right;
+    padding-top: 10px;
+    padding-right: 50px;
+    letter-spacing: 3px;
+}
