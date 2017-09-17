@@ -72,11 +72,9 @@ echo '<hr />';
 
 function printN (int $n)
 {
-    static $i;
-    if ($n > 0){
-       echo $i + 1 . ' ';
-       $i++;
-       printN($n - 1);
-   }
+    if ($n == 1) {
+        return "1";
+    }
+    echo printN($n - 1) . " " . $n;
 }
-printN ("15");
+printN ("10");
