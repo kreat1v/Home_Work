@@ -44,18 +44,13 @@ echo "<hr />";
 $a = "There are many big and small libraries everywhere in our country. They have millions of books in different languages. You can find there the oldest and the newest books.";
 $a = strtolower($a);
 $a = str_word_count($a, 1);
-$first_element_min = strlen($a[0]);
+$first_element_min = $first_element_max = strlen($a[0]);
 for ($i = 1; $i < count($a); $i++) {
     $int = strlen($a[$i]);
     if ($int < $first_element_min) {
-        $first_element_min = strlen($a[$i]);
-    }
-}
-$first_element_max = strlen($a[0]);
-for ($i = 1; $i < count($a); $i++) {
-    $int = strlen($a[$i]);
-    if ($int > $first_element_max) {
-        $first_element_max = strlen($a[$i]);
+        $first_element_min = $int;
+    } elseif ($int > $first_element_max) {
+        $first_element_max = $int;
     }
 }
 echo "Длинна самого короткого слова: {$first_element_min}, а самого длинного: {$first_element_max}.";
@@ -92,7 +87,7 @@ echo "Cлова, которые начинаются и оканчиваются
 for ($i = 1; $i < count($a); $i++) {
     $word = $a[$i];
     if ($word[0] == (substr($word, -1))) {
-        echo $a[$i] . " ";
+        echo $word . " ";
     }
 }
 
@@ -111,11 +106,7 @@ $a = str_word_count($a, 1, '0123456789');
 for ($i = 0; $i < count($a); $i++){
     $a[$i] = preg_replace('/[^0-9]/', '', $a[$i]);
 }
-foreach ($a as $key => $value){
-    if ($value == ''){
-        unset($a[$key]);
-    }
-}
+$a = array_filter($a, function($el){return strlen($el) > 0;});
 print_r($a);
 
 echo "<hr />";
@@ -125,11 +116,12 @@ $a = "There are many big and small libraries everywhere in our country. They hav
 $b = preg_replace('/[^A-Z]/', '', $a);
 $c = preg_replace('/[^a-z]/', '', $a);
 if ((strlen($b)) < (strlen($c))) {
-    $a = strtolower($a);
+    echo strtolower($a);
+} elseif ((strlen($b)) > (strlen($c))) {
+    echo strtoupper($a);
 } else {
-    $a = strtoupper($a);
+    echo  $a;
 }
-echo  $a;
 
 echo "<hr />";
 
@@ -169,17 +161,17 @@ foreach ($a as $key => $b) {
         continue;
     }
     $j = $j + $b;
-    foreach ($vowels as $c) {
-        if ($key == $c){
-            $i = $i + $b;
-            $j = $j - $b;
-        }
+    if (in_array($key, $vowels)){
+        $i = $i + $b;
+        $j = $j - $b;
     }
 }
-if ($i < $j) {
+if ($i < $j){
     echo 'В строке больше согласных.';
-} else {
+} elseif ($i > $j){
     echo 'В строке больше гласных.';
+} elseif ($i = $j){
+    echo 'Равное количество гласных и согласных.';
 }
 
 echo "<hr />";
