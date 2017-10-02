@@ -12,6 +12,9 @@ $comments = unserialize(file_get_contents($commentsFile));
 // слова, которые мы фильтруем
 $censored = explode(PHP_EOL, file_get_contents($censoredFile));
 
+// пустой массив для публикации сообщений об ошибках
+$error = [];
+
 // основная логика
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -28,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // проверяем, есть ли запрещенные слова в форме
             if (badwordFilter($censored, $author) || badwordFilter($censored, $message)){
-                echo "<div class=\"errors\">Избавь нас от скверных слов!</div>";
+                $error[] = 'Избавь нас от скверных слов!';
             } else {
 
                 // сохраняем данные из формы
@@ -49,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 unset($_POST['message']);
             }
         } else {
-            echo "<div class=\"errors\">Пользователь с таким мылом уже существует! Введи другое.</div>";
+            $error[] = 'Пользователь с таким мылом уже существует! Введи другое.';
         }
 
     } else {
-        echo "<div class=\"errors\">Заполни все поля формы!</div>";
+        $error[] = 'Заполни все поля формы!';
     }
 }
 
@@ -86,15 +89,10 @@ usort($comments, function ($a, $b){
 
 // переменные для пагинации
 $count = 5;
-$len = count($comments) / $count;
-if (is_float($len)){
-    $len = (int)$len + 1;
-}
-$p = isset($_GET["p"]) ? (int) $_GET["p"] : 1;
+$len = ceil(count($comments) / $count);
+$p = isset($_GET["p"]) && ($_GET["p"]) > 0 && ($_GET["p"]) <= $len ? (int) $_GET["p"] : 1;
 
-?>
-
-<!doctype html>
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -107,6 +105,10 @@ $p = isset($_GET["p"]) ? (int) $_GET["p"] : 1;
 <body>
 
 <main>
+
+    <?php if (!empty($error)): ?>
+    <div class="errors"><?= $error[0] ?></div>
+    <?php endif; ?>
 
     <div class="h1">
         <div class="first_h "><p>ОСТАВЬ</p></div>
