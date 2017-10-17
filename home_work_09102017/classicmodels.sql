@@ -22,14 +22,14 @@ SELECT o.*, COUNT(e.officeCode) AS employees
 FROM offices o
   JOIN employees e ON o.officeCode = e.officeCode
 GROUP BY e.officeCode
-HAVING COUNT(e.officeCode) > 4;
+HAVING employees > 4;
 
 # Задание 5 - Получить список заказов (orders), в которых было заказано более 10 товаров.
 SELECT o.*, COUNT(od.orderNumber) AS goods
 FROM orders o
   JOIN orderdetails od ON o.orderNumber = od.orderNumber
 GROUP BY od.orderNumber
-HAVING COUNT(od.orderNumber) > 10;
+HAVING goods > 10;
 
 # Задание 6 - Получить полный список сотрудников (employees), для каждого сотрудника получить количество привязанных к нему покупателей (customers).
 SELECT e.lastName, e.firstName, COUNT(c.customerNumber) AS customers
