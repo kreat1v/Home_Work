@@ -48,15 +48,20 @@ class Task2
 
     public function setAge($age)
     {
-        $this->checkAge($age);
+        if ($this->checkAge($age)) {
+            $this->age = $age;
+        } else {
+            echo 'Вы ввели неккоректный возраст!';
+        }
+
     }
 
     private function checkAge($age)
     {
         if ($age <= 100 && $age >= 1) {
-            $this->age = $age;
+            return true;
         } else {
-            echo 'Вы ввели неккоректный возраст!';
+            return false;
         }
     }
 
@@ -338,7 +343,7 @@ class Cookie
 {
     public function setCookie($name, $value)
     {
-        setcookie($name, $value);
+        setcookie($name, $value,time()+3600);
     }
 
     public function getCookie($name)
@@ -350,7 +355,7 @@ class Cookie
 
     public function delCookie($name)
     {
-        setcookie($name, '');
+        setcookie($name, '',time()-3600);
     }
 }
 
@@ -368,12 +373,12 @@ class Session
         session_start();
     }
 
-    public function sessionVariable($variable, $value)
+    public function session($variable, $value)
     {
         $_SESSION[$variable] = $value;
     }
 
-    public function getVariable($variable)
+    public function get($variable)
     {
         if (isset($_SESSION[$variable])) {
             return $_SESSION[$variable];
@@ -381,14 +386,14 @@ class Session
 
     }
 
-    public function delVariable($variable)
+    public function del($variable)
     {
         if (isset($_SESSION[$variable])) {
             unset($_SESSION[$variable]);
         }
     }
 
-    public function presenceVariable($variable)
+    public function presence($variable)
     {
         if (isset($_SESSION[$variable])) {
             return true;
@@ -399,9 +404,9 @@ class Session
 }
 
 $newSession = new Session;
-$newSession->sessionVariable('a', 'New Session!');
-echo $newSession->getVariable('a').'<br>';
-var_dump($newSession->presenceVariable('a'));
-$newSession->delVariable('a');
+$newSession->session('a', 'New Session!');
+echo $newSession->get('a').'<br>';
+var_dump($newSession->presence('a'));
+$newSession->del('a');
 echo '<br>';
-var_dump($newSession->presenceVariable('a'));
+var_dump($newSession->presence('a'));
