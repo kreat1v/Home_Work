@@ -341,27 +341,27 @@ echo '<hr>';
 
 class Cookie
 {
-    public function setCookie($name, $value)
+    public function set($name, $value)
     {
         setcookie($name, $value,time()+3600);
     }
 
-    public function getCookie($name)
+    public function get($name)
     {
         if (isset($_COOKIE[$name])) {
             return $_COOKIE[$name];
         }
     }
 
-    public function delCookie($name)
+    public function del($name)
     {
         setcookie($name, '',time()-3600);
     }
 }
 
 $cookie = new Cookie;
-$cookie->setCookie('Foo', 'New Cookie');
-echo $cookie->getCookie('Foo');
+$cookie->set('Foo', 'New Cookie');
+echo $cookie->get('Foo');
 echo '<hr>';
 
 // Задание 9 - Создайте класс Session - оболочку над сессиями. Он должен иметь следующие методы: создать переменную сессии, получить переменную, удалить переменную сессии, проверить наличие переменной сессии. Сессия должна стартовать (session_start) в методе __construct.
@@ -373,7 +373,7 @@ class Session
         session_start();
     }
 
-    public function session($variable, $value)
+    public function set($variable, $value)
     {
         $_SESSION[$variable] = $value;
     }
@@ -404,7 +404,7 @@ class Session
 }
 
 $newSession = new Session;
-$newSession->session('a', 'New Session!');
+$newSession->set('a', 'New Session!');
 echo $newSession->get('a').'<br>';
 var_dump($newSession->presence('a'));
 $newSession->del('a');
