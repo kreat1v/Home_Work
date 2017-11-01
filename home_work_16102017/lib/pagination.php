@@ -4,7 +4,7 @@ class Pagination
 {
     public $buttons = [];
 
-    public function __construct(Array $options = ['itemsCount' => 257, 'itemsPerPage' => 10, 'currentPage' => 1])
+    public function __construct(Array $options)
     {
         extract($options);
 
@@ -16,7 +16,7 @@ class Pagination
         /** @var int $itemsCount
          *  @var int $itemsPerPage
          */
-        $pageCount = ceil($itemsCount/$itemsPerPage);
+        $pagesCount = ceil($itemsCount/$itemsPerPage);
 
         /** @var int $pagesCount */
         if ($pagesCount == 1) {
