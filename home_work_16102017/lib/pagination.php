@@ -19,7 +19,7 @@ class Pagination
         $pagesCount = ceil($itemsCount/$itemsPerPage);
 
         /** @var int $pagesCount */
-        if ($pagesCount == 1) {
+        if ($pagesCount == 1 || $pagesCount == 0) {
             return;
         }
 
@@ -28,13 +28,13 @@ class Pagination
             $currentPage = $pagesCount;
         }
 
-        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, 'Previous');
+        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, '<<');
 
         for ($i = 1; $i <= $pagesCount; $i++) {
             $active = $currentPage != $i;
             $this->buttons[] = new Button($i, $active);
         }
 
-        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, 'Next');
+        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, '>>');
     }
 }

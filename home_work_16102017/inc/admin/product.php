@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_POST['save'])) {
+if (isset($_POST['save']) || isset($_POST['rename'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];
     $price = $_POST['price'];
@@ -25,11 +25,50 @@ if (isset($_POST['save'])) {
 $id = $_GET['id'];
 $categoryResult = categoryList();
 
+// Реализация пагинации
+$productResult = productList(null, $_GET['category_id']);
+$line = mysqli_fetch_all($productResult, MYSQLI_ASSOC);
+//echo '<pre>';
+//print_r($line);
+
+$numberOfGoods = 5;
+$lastPage = ceil(count($line)/$numberOfGoods);
+
+$p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+
+
+//if (count($line) > 0) {
+//    if ($p < 1 || $p > $lastPage) {
+//        header("Location: ?page=product&category_id={$_GET['category_id']}&p=1");
+//    }
+//}
+
+
+$options = new Pagination([
+    'itemsCount' => count($line),
+    'itemsPerPage' => $numberOfGoods,
+    'currentPage' => $p
+]);
+
+// Реализация удаления товаров
 if (isset($_GET['delete'])) {
     if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
         $result = deleteProduct($id);
-        header("Location: ?page=product");
+//        if (count($line) > $numberOfGoods) {
+//            $p2 = '&p='.$p;
+//        } else {
+//            $p2 = null;
+//        }
+        header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
     }
+}
+
+if ($_POST['category_id']){
+    header("Location: ?page=product&category_id={$_POST['category_id']}");
+}
+
+if (isset($_POST['save'])) {
+    header("Location: ?page=product&category_id=$categoryId&p=$lastPage");
 }
 
 ?>
@@ -64,42 +103,69 @@ if (isset($_GET['delete'])) {
                         <option value="<?=$category['id']?>"><?=$category['title']?></option>
                 <?php } ?>
             </select>
-            <input type="submit" name="save" value="Сохранить">
+            <input type="submit" name="<?php
+            if ($id == 0) {
+                echo 'save';
+            } else {
+                echo 'rename';
+            }
+            ?>" value="Сохранить">
         </form>
     <?php } ?>
 
-    <ul>
-        <?php
+    <form method="post" id="go">
+        <select size = 10 name="category_id" onchange="document.getElementById('go').submit()">
+            <?php
             $categoryResult = categoryList();
             while ($category = mysqli_fetch_assoc($categoryResult)) {
-        ?>
-
-        <li>
-            <?=$category['title']?>
-            <ul>
-                <?php
-                    $productResult = productList();
-                    while ($product = mysqli_fetch_assoc($productResult)) {
-                        if ($product['category_id'] == $category['id']) {
                 ?>
+                <option value="<?=$category['id']?>"><?=$category['title']?></option>
+            <?php } ?>
+        </select>
+    </form>
 
+    <ul>
+        <?php
+        if (isset($_GET['category_id'])) {
+            $product = array_slice($line, $p*$numberOfGoods - $numberOfGoods, $numberOfGoods);
+            foreach ($product as $key => $value) {
+                ?>
                 <li>
-                    <a href="?page=product&id=<?=$product['id']?>" class="price">
-                        <?=$product['id']?>: <?=$product['title']?>
+                    <a href="?page=product&category_id=<?=$_GET['category_id']?>&id=<?php
+                    echo $product[$key]['id'];
+                    if ($lastPage > 1) {
+                        echo '&p='.$p;
+                    }
+                    ?>" class="price">
+                        <?=$product[$key]['id']?>: <?=$product[$key]['title']?>
                     </a>
-                    <p class="price"><?=$product['price']?></p>
-                    <a href="?page=product&id=<?=$product['id']?>&delete=<?=$product['id']?>">
+                    <p class="price"><?=$product[$key]['price']?></p>
+                    <a href="?page=product&category_id=<?=$_GET['category_id']?>&id=<?php
+                    echo $product[$key]['id'];
+                    if ($lastPage > 1) {
+                        echo '&p='.$p;
+                    }
+                    ?>&delete=<?=$product[$key]['id']?>">
                         Удалить
                     </a>
                 </li>
 
                 <?php
-                        }
-                    }
-                ?>
-            </ul>
-        </li>
-
-        <?php } ?>
+            }
+        }
+        ?>
     </ul>
+</div>
+
+<div>
+    <?php
+    if (isset($_GET['category_id'])) {
+        foreach ($options->buttons as $button) {
+            if ($button->isActive) { ?>
+                <a href='?page=product&category_id=<?=$_GET['category_id']?>&p=<?= $button->page ?>'><?= $button->text ?></a>
+            <?php } else { ?>
+                <span style="color:#555555"><?= $button->text ?></span>
+            <?php }
+        }
+    }?>
 </div>

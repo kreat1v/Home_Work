@@ -38,18 +38,20 @@ function categoryList($id = null)
     return getList($GLOBALS['tablesMap']['category'], $id);
 }
 
-function productList($id = null)
+function productList($id = null, $categoryId = null)
 {
-    return getList($GLOBALS['tablesMap']['product'], $id);
+    return getList($GLOBALS['tablesMap']['product'], $id, $categoryId);
 }
 
-function getList($tableName, $id = null)
+function getList($tableName, $id = null, $categoryId = null)
 {
     global $connection;
 
     $where = '';
     if ($id > 0) {
         $where = ' WHERE id = '.$id;
+    } elseif ($categoryId > 0) {
+        $where = ' WHERE category_id = '.$categoryId;
     }
 
     $result = mysqli_query($connection, "SELECT * FROM $tableName $where;");
