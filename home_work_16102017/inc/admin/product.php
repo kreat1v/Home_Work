@@ -28,21 +28,14 @@ $categoryResult = categoryList();
 // Реализация пагинации
 $productResult = productList(null, $_GET['category_id']);
 $line = mysqli_fetch_all($productResult, MYSQLI_ASSOC);
-//echo '<pre>';
-//print_r($line);
 
 $numberOfGoods = 5;
 $lastPage = ceil(count($line)/$numberOfGoods);
 
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-
-
-//if (count($line) > 0) {
-//    if ($p < 1 || $p > $lastPage) {
-//        header("Location: ?page=product&category_id={$_GET['category_id']}&p=1");
-//    }
+//if (isset($_POST['save']) || $p > $lastPage) {
+//    header("Location: ?page=product&category_id={$_POST['category_id']}&p=$lastPage");
 //}
-
 
 $options = new Pagination([
     'itemsCount' => count($line),
@@ -54,11 +47,6 @@ $options = new Pagination([
 if (isset($_GET['delete'])) {
     if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
         $result = deleteProduct($id);
-//        if (count($line) > $numberOfGoods) {
-//            $p2 = '&p='.$p;
-//        } else {
-//            $p2 = null;
-//        }
         header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
     }
 }
@@ -67,8 +55,8 @@ if ($_POST['category_id']){
     header("Location: ?page=product&category_id={$_POST['category_id']}");
 }
 
-if (isset($_POST['save'])) {
-    header("Location: ?page=product&category_id=$categoryId&p=$lastPage");
+if (isset($_POST['rename'])) {
+    header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
 }
 
 ?>
@@ -89,7 +77,7 @@ if (isset($_POST['save'])) {
         }
         ?>
 
-        <form action="?page=product" method="post">
+        <form method="post">
             <input type="hidden" value="<?=$id?>" name="id">
             <input type="text" value="<?=$title?>" placeholder="Название товара" name="title">
             <input type="text" value="<?=$price?>" placeholder="Цена товара" name="price">
@@ -111,7 +99,9 @@ if (isset($_POST['save'])) {
             }
             ?>" value="Сохранить">
         </form>
-    <?php } ?>
+    <?php }
+    print_r($_POST);
+    ?>
 
     <form method="post" id="go">
         <select size = 10 name="category_id" onchange="document.getElementById('go').submit()">

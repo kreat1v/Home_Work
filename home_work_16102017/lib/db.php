@@ -43,18 +43,20 @@ function productList($id = null, $categoryId = null)
     return getList($GLOBALS['tablesMap']['product'], $id, $categoryId);
 }
 
-function getList($tableName, $id = null, $categoryId = null)
+function getList($tableName, $id = null, $categoryId = null, $limit = null, $limitStart = null)
 {
     global $connection;
 
-    $where = '';
+    $condition = '';
     if ($id > 0) {
-        $where = ' WHERE id = '.$id;
+        $condition = ' WHERE id = '.$id;
     } elseif ($categoryId > 0) {
-        $where = ' WHERE category_id = '.$categoryId;
+        $condition = ' WHERE category_id = '.$categoryId;
+    } elseif ($limit > 0 && $limitStart > 0){
+        $condition = ' LIMIT '.$limit.' OFFSET '.$limitStart;
     }
 
-    $result = mysqli_query($connection, "SELECT * FROM $tableName $where;");
+    $result = mysqli_query($connection, "SELECT * FROM $tableName $condition;");
     return $result;
 }
 

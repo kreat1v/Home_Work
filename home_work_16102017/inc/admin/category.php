@@ -21,6 +21,13 @@ if (isset($_POST['save']) || isset($_POST['rename'])) {
 
 $id = $_GET['id'];
 
+// Реализация удаления категорий
+if (isset($_GET['delete'])) {
+    if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
+        $result = deleteCategory($id);
+    }
+}
+
 // Реализация пагинации
 $categoryResult = categoryList();
 $line = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);
@@ -29,10 +36,10 @@ $numberOfGoods = 5;
 $lastPage = ceil(count($line)/$numberOfGoods);
 
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-if (isset($_POST['save'])) {
+if (isset($_POST['save']) || $p > $lastPage) {
     header("Location: ?page=category&p=$lastPage");
 }
-if ($p < 1 || $p > $lastPage) {
+if ($p < 1) {
     header("Location: ?page=category&p=1");
 }
 
@@ -41,14 +48,6 @@ $options = new Pagination([
     'itemsPerPage' => $numberOfGoods,
     'currentPage' => $p
 ]);
-
-// Реализация удаления категорий
-if (isset($_GET['delete'])) {
-    if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
-        $result = deleteCategory($id);
-        header("Location: ?page=category&p=$p");
-    }
-}
 
 ?>
 <div>
