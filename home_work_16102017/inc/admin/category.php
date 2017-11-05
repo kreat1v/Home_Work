@@ -54,6 +54,7 @@ $options = new Pagination([
 <div>
     <a href="?page=category&p=<?=$p?>&id=0">Добавить категорию</a>
 
+    <!-- Получения данных для редактирования категорий -->
     <?php
     if (isset($id)) {
         $title = '';
@@ -63,6 +64,7 @@ $options = new Pagination([
         }
         ?>
 
+        <!-- Форма добавления категорий -->
         <form action="?page=category&p=<?=$p?>" method="post">
             <input type="hidden" name="id" value="<?=$id?>">
             <input type="text" value="<?=$title?>" placeholder="Название категории" name="title">
@@ -77,10 +79,9 @@ $options = new Pagination([
 
     <?php } ?>
 
+    <!-- Вывод выборки категорий -->
     <ul>
-    <?php
-    while ($category = mysqli_fetch_assoc($categoryResult)) {
-        ?>
+    <?php while ($category = mysqli_fetch_assoc($categoryResult)) { ?>
         <li>
             <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>">
                 <?=$category['id']?>: <?=$category['title']?>

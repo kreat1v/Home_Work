@@ -1,5 +1,6 @@
 <?php
 
+// Обработка данных из формы
 if (isset($_POST['save']) || isset($_POST['rename'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];
@@ -28,7 +29,6 @@ $id = $_GET['id'];
 if (isset($_GET['delete'])) {
     if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
         $result = deleteProduct($id);
-//        header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
     }
 }
 
@@ -40,8 +40,19 @@ $limitStart = $p*$numberOfProducts - $numberOfProducts;
 $productResult = productSection($numberOfProducts, $limitStart, $_GET['category_id']);
 $lastPage = ceil(productCount($_GET['category_id'])/$numberOfProducts);
 
-if (isset($_POST['save']) || $p > $lastPage) {
+if ($p > $lastPage) {
     header("Location: ?page=product&category_id={$_GET['category_id']}&p=$lastPage");
+}
+
+if (isset($_POST['save'])) {
+    $lastPage = ceil(productCount($_POST['category_id'])/$numberOfProducts);
+    header("Location: ?page=product&category_id={$_POST['category_id']}&p=$lastPage");
+} elseif ($_POST['category_id']){
+    header("Location: ?page=product&category_id={$_POST['category_id']}");
+}
+
+if (isset($_POST['rename'])) {
+    header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
 }
 
 $options = new Pagination([
@@ -50,20 +61,13 @@ $options = new Pagination([
     'currentPage' => $p
 ]);
 
-if ($_POST['category_id']){
-    header("Location: ?page=product&category_id={$_POST['category_id']}");
-}
-
-if (isset($_POST['rename'])) {
-    header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
-}
-
 ?>
 <div>
     <a href="?page=product&id=0">Добавить товар</a>
 
+    <!-- Получения данных для редактирования продукции -->
     <?php
-    if (isset($id)) {
+    if (isset($id) && !isset($_GET['delete'])) {
         $title = '';
         $price = '';
         $categoryId = '';
@@ -76,6 +80,7 @@ if (isset($_POST['rename'])) {
         }
         ?>
 
+        <!-- Форма добавления продукции -->
         <form method="post">
             <input type="hidden" value="<?=$id?>" name="id">
             <input type="text" value="<?=$title?>" placeholder="Название товара" name="title">
@@ -101,6 +106,7 @@ if (isset($_POST['rename'])) {
         </form>
     <?php } ?>
 
+    <!-- Форма доступных категорий -->
     <form method="post" id="go">
         <select size = 10 name="category_id" onchange="document.getElementById('go').submit()">
             <?php
@@ -112,6 +118,7 @@ if (isset($_POST['rename'])) {
         </select>
     </form>
 
+    <!-- Вывод выборки продукции -->
     <ul>
         <?php
         if (isset($_GET['category_id'])) {
@@ -136,7 +143,6 @@ if (isset($_POST['rename'])) {
                         Удалить
                     </a>
                 </li>
-
                 <?php
             }
         }
@@ -144,6 +150,7 @@ if (isset($_POST['rename'])) {
     </ul>
 </div>
 
+<!-- Вывод пагинации -->
 <div>
     <?php
     if (isset($_GET['category_id'])) {
