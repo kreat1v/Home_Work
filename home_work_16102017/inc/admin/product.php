@@ -118,6 +118,15 @@ $options = new Pagination([
         </select>
     </form>
 
+    <!-- Выбранная категория -->
+    <h3>
+        <?php
+        if (isset($_GET['category_id'])) {
+            echo mysqli_fetch_assoc(categoryList($_GET['category_id']))['title'];
+        }
+        ?>
+    </h3>
+
     <!-- Вывод выборки продукции -->
     <ul>
         <?php
