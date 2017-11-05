@@ -23,33 +23,32 @@ if (isset($_POST['save']) || isset($_POST['rename'])) {
 }
 
 $id = $_GET['id'];
-$categoryResult = categoryList();
-
-// Реализация пагинации
-$productResult = productList(null, $_GET['category_id']);
-$line = mysqli_fetch_all($productResult, MYSQLI_ASSOC);
-
-$numberOfGoods = 5;
-$lastPage = ceil(count($line)/$numberOfGoods);
-
-$p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-//if (isset($_POST['save']) || $p > $lastPage) {
-//    header("Location: ?page=product&category_id={$_POST['category_id']}&p=$lastPage");
-//}
-
-$options = new Pagination([
-    'itemsCount' => count($line),
-    'itemsPerPage' => $numberOfGoods,
-    'currentPage' => $p
-]);
 
 // Реализация удаления товаров
 if (isset($_GET['delete'])) {
     if ($_GET['delete'] > 0 && $_GET['delete'] == $id) {
         $result = deleteProduct($id);
-        header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
+//        header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
     }
 }
+
+// Реализация пагинации
+$p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+
+$numberOfProducts = 5;
+$limitStart = $p*$numberOfProducts - $numberOfProducts;
+$productResult = productSection($numberOfProducts, $limitStart, $_GET['category_id']);
+$lastPage = ceil(productCount($_GET['category_id'])/$numberOfProducts);
+
+if (isset($_POST['save']) || $p > $lastPage) {
+    header("Location: ?page=product&category_id={$_GET['category_id']}&p=$lastPage");
+}
+
+$options = new Pagination([
+    'itemsCount' => productCount($_GET['category_id']),
+    'itemsPerPage' => $numberOfProducts,
+    'currentPage' => $p
+]);
 
 if ($_POST['category_id']){
     header("Location: ?page=product&category_id={$_POST['category_id']}");
@@ -86,6 +85,7 @@ if (isset($_POST['rename'])) {
                     <option value="<?=$categoryId?>"><?=$categoryName['title']?></option>
                 <?php } ?>
                 <?php
+                    $categoryResult = categoryList();
                     while ($category = mysqli_fetch_assoc($categoryResult)){
                 ?>
                         <option value="<?=$category['id']?>"><?=$category['title']?></option>
@@ -99,9 +99,7 @@ if (isset($_POST['rename'])) {
             }
             ?>" value="Сохранить">
         </form>
-    <?php }
-    print_r($_POST);
-    ?>
+    <?php } ?>
 
     <form method="post" id="go">
         <select size = 10 name="category_id" onchange="document.getElementById('go').submit()">
@@ -117,25 +115,24 @@ if (isset($_POST['rename'])) {
     <ul>
         <?php
         if (isset($_GET['category_id'])) {
-            $product = array_slice($line, $p*$numberOfGoods - $numberOfGoods, $numberOfGoods);
-            foreach ($product as $key => $value) {
+            while ($product = mysqli_fetch_assoc($productResult)) {
                 ?>
                 <li>
                     <a href="?page=product&category_id=<?=$_GET['category_id']?>&id=<?php
-                    echo $product[$key]['id'];
+                    echo $product['id'];
                     if ($lastPage > 1) {
                         echo '&p='.$p;
                     }
                     ?>" class="price">
-                        <?=$product[$key]['id']?>: <?=$product[$key]['title']?>
+                        <?=$product['id']?>: <?=$product['title']?>
                     </a>
-                    <p class="price"><?=$product[$key]['price']?></p>
+                    <p class="price"><?=$product['price']?></p>
                     <a href="?page=product&category_id=<?=$_GET['category_id']?>&id=<?php
-                    echo $product[$key]['id'];
+                    echo $product['id'];
                     if ($lastPage > 1) {
                         echo '&p='.$p;
                     }
-                    ?>&delete=<?=$product[$key]['id']?>">
+                    ?>&delete=<?=$product['id']?>">
                         Удалить
                     </a>
                 </li>

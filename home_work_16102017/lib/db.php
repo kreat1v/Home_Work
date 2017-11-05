@@ -1,5 +1,6 @@
 <?php
 
+// Подключение к БД
 $dbHost = 'localhost';
 $dbUser = 'goods';
 $dbPassword = 'goods';
@@ -18,8 +19,6 @@ $tablesMap = [
     'admins' => 'admins'
 ];
 
-
-
 function login($login, $password)
 {
     global $connection;
@@ -33,33 +32,77 @@ function login($login, $password)
     return false;
 }
 
+// Получение списка
 function categoryList($id = null)
 {
     return getList($GLOBALS['tablesMap']['category'], $id);
 }
 
-function productList($id = null, $categoryId = null)
+function productList($id = null)
 {
-    return getList($GLOBALS['tablesMap']['product'], $id, $categoryId);
+    return getList($GLOBALS['tablesMap']['product'], $id);
 }
 
-function getList($tableName, $id = null, $categoryId = null, $limit = null, $limitStart = null)
+function getList($tableName, $id = null)
 {
     global $connection;
 
-    $condition = '';
+    $where = '';
     if ($id > 0) {
-        $condition = ' WHERE id = '.$id;
-    } elseif ($categoryId > 0) {
-        $condition = ' WHERE category_id = '.$categoryId;
-    } elseif ($limit > 0 && $limitStart > 0){
-        $condition = ' LIMIT '.$limit.' OFFSET '.$limitStart;
+        $where = ' WHERE id = '.$id;
     }
 
-    $result = mysqli_query($connection, "SELECT * FROM $tableName $condition;");
+    $result = mysqli_query($connection, "SELECT * FROM $tableName $where;");
     return $result;
 }
 
+// Получение вырезки из списка
+function categorySection($limit, $limitStart, $categoryId = null)
+{
+    return getSection($GLOBALS['tablesMap']['category'], $limit, $limitStart, $categoryId);
+}
+
+function productSection($limit, $limitStart, $categoryId = null)
+{
+    return getSection($GLOBALS['tablesMap']['product'], $limit, $limitStart, $categoryId);
+}
+
+function getSection($tableName, $limit, $limitStart, $categoryId = null)
+{
+    global $connection;
+
+    if ($categoryId > 0) {
+        $where = ' WHERE category_id = '.$categoryId;
+    }
+
+    $result = mysqli_query($connection, "SELECT * FROM $tableName $where LIMIT $limit OFFSET $limitStart;");
+    return $result;
+}
+
+// Получение количества
+function categoryCount()
+{
+    return getCount($GLOBALS['tablesMap']['category']);
+}
+
+function productCount($categoryId = null)
+{
+    return getCount($GLOBALS['tablesMap']['product'], $categoryId);
+}
+
+function getCount($tableName, $categoryId = null)
+{
+    global $connection;
+
+    if ($categoryId > 0) {
+        $where = ' WHERE category_id = '.$categoryId;
+    }
+
+    $result = mysqli_fetch_assoc(mysqli_query($connection, "SELECT COUNT(*) as count FROM $tableName $where;"));
+    return $result['count'];
+}
+
+// Создание
 function createCategory($fields)
 {
     return createEntity($GLOBALS['tablesMap']['category'], $fields);
@@ -83,6 +126,7 @@ function createEntity($tableName, $data)
     return mysqli_query($connection, "INSERT INTO $tableName ($cols) VALUES ($values);");
 }
 
+// Обновление
 function updateCategory($id, $data)
 {
     return updateEntity($GLOBALS['tablesMap']['category'], $id, $data);
@@ -107,6 +151,7 @@ function updateEntity($tableName, $id, $data)
     return mysqli_query($connection, "UPDATE $tableName SET $values WHERE id = $id;");
 }
 
+// Удаление
 function deleteCategory($id)
 {
     return deleteEntity($GLOBALS['tablesMap']['category'], $id);

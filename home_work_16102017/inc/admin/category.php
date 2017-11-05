@@ -29,23 +29,24 @@ if (isset($_GET['delete'])) {
 }
 
 // Реализация пагинации
-$categoryResult = categoryList();
-$line = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);
-
-$numberOfGoods = 5;
-$lastPage = ceil(count($line)/$numberOfGoods);
-
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+
+$numberOfCategories = 5;
+$limitStart = $p*$numberOfCategories - $numberOfCategories;
+$categoryResult = categorySection($numberOfCategories, $limitStart);
+$lastPage = ceil(categoryCount()/$numberOfCategories);
+
 if (isset($_POST['save']) || $p > $lastPage) {
     header("Location: ?page=category&p=$lastPage");
 }
+
 if ($p < 1) {
     header("Location: ?page=category&p=1");
 }
 
 $options = new Pagination([
-    'itemsCount' => count($line),
-    'itemsPerPage' => $numberOfGoods,
+    'itemsCount' => categoryCount(),
+    'itemsPerPage' => $numberOfCategories,
     'currentPage' => $p
 ]);
 
@@ -78,14 +79,13 @@ $options = new Pagination([
 
     <ul>
     <?php
-    $category = array_slice($line, $p*$numberOfGoods - $numberOfGoods, $numberOfGoods);
-    foreach ($category as $key => $value) {
+    while ($category = mysqli_fetch_assoc($categoryResult)) {
         ?>
         <li>
-            <a href="?page=category&p=<?=$p?>&id=<?=$category[$key]['id']?>">
-                <?=$category[$key]['id']?>: <?=$category[$key]['title']?>
+            <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>">
+                <?=$category['id']?>: <?=$category['title']?>
             </a>
-            <a href="?page=category&p=<?=$p?>&id=<?=$category[$key]['id']?>&delete=<?=$category[$key]['id']?>">
+            <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>&delete=<?=$category['id']?>">
                 Удалить
             </a>
         </li>
