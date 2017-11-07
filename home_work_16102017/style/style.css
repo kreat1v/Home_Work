@@ -1,3 +1,227 @@
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #191919;
+    color: #ffffff;
+    font-family: 'Anonymous Pro', monospace;
+}
+
+.hello {
+    margin: 20px 25px 25px 0;
+    float: right;
+}
+
+nav {
+    display: block;
+    margin-top: 50px;
+    clear: both;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: linear-gradient(to bottom, #548484 30%, #1b3232 100%);
+    height: 50px;
+    border: 2px solid #6daaaa;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+nav ul {
+    display: block;
+    margin: 0 auto;
+}
+
+nav li{
+    display: inline-block;
+}
+
+nav li a {
+    display: inline-block;
+    width: 150px;
+    height: 39px;
+    text-align: center;
+    padding-top: 5px;
+    color: #191919;
+    position: relative;
+    top: -2px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+nav li a:hover,
+.category:hover,
+.product:hover {
+    background-color: #191919;
+    border-bottom: 2px solid white;
+    color: #ffffff;
+    border-right: 1px solid #6daaaa;
+    border-left: 1px solid #6daaaa;
+}
+
+main {
+    height: 500px;
+    background: linear-gradient(to bottom, #494949 70%, #2d2d2d 100%);
+    border-radius: 15px;
+    border: 1px solid #969696;
+    position: relative;
+    top: -15px;
+    padding: 150px 70px;
+    box-sizing: border-box;
+}
+
+a.button,
+form input.button {
+    width: 250px;
+    height: 30px;
+    text-align: center;
+    box-sizing: border-box;
+    display: block;
+    font-family: arial,sans-serif;
+    font-size: 11px;
+    color: rgb(205,216,228);
+    text-shadow: 0 -1px rgb(46,53,58);
+    text-decoration: none;
+    user-select: none;
+    line-height: 2em;
+    padding: 1px 1.2em;
+    outline: none;
+    border: 1px solid rgba(33,43,52,1);
+    border-radius: 3px;
+    background: rgb(81,92,102) linear-gradient(rgb(81,92,102), rgb(69,78,87));
+    cursor: pointer;
+    box-shadow:
+            inset 0 1px rgba(101,114,126,1),
+            inset 0 0 1px rgba(140,150,170,.8),
+            0 1px rgb(83,94,104),
+            0 0 1px rgb(86,96,106);
+}
+
+a.button:active,
+form input.button:active {
+    box-shadow:
+            inset 0 1px 3px rgba(0,10,20,.5),
+            0 1px rgb(83,94,104),
+            0 0 1px rgb(86,96,106);
+}
+
+a.button:focus:not(:active),
+form input.button:focus:not(:active) {
+    border: 1px solid rgb(22,32,43);
+    border-bottom: 1px solid rgb(25,34,45);
+    background: rgb(53,61,71);
+    box-shadow:
+            inset 0 1px 3px rgba(0,10,20,.5),
+            0 1px rgb(83,94,104),
+            0 0 1px rgb(86,96,106);
+    pointer-events: none;
+}
+
+.select {
+    width: 250px;
+    border: 1px solid #969696;
+    outline: none;
+}
+
+.form .select {
+    margin-top: 15px;
+    height: 30px;
+}
+
+option {
+    padding: 5px 0 5px 20px;
+}
+
+.form input {
+    width: 250px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #969696;
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+.field {
+    display: block;
+}
+
+.left_side {
+    float: left;
+}
+
+.middle {
+    float: left;
+    margin-left: 100px;
+}
+
+h3 {
+    color: #969696;
+    margin: 0 0 20px 41px;
+}
+
 .price {
     display: inline-block;
+    width: 100px;
+}
+
+.right_side {
+    margin-left: 100px;
+    float: left;
+    width: 400px;
+}
+
+.right_side_product {
+    width: 500px;
+}
+
+.right_side li {
+    list-style: square;
+    color: #969696;
+    list-style-position: inside;
+    padding-left: 20px;
+}
+
+.right_side ul a {
+    padding-top: 5px;
+    height: 25px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 18px;
+    color: #969696;
+}
+
+.right_side ul li:nth-child(2n-1) {
+    background-color: rgba(45, 45, 45, 0.35);
+}
+
+.right_side ul a:hover {
+    text-decoration: underline;
+}
+
+.right_side .row {
+    width: 200px;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination_but1,
+.pagination_but2 {
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #969696;
+    color: #969696;
+    text-decoration: none;
+}
+
+.pagination .active {
+    border: 1px solid #5a5a5a;
+    color: #5a5a5a;
 }

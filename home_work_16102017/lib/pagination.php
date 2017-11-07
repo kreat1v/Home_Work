@@ -28,13 +28,13 @@ class Pagination
             $currentPage = $pagesCount;
         }
 
-        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, '<<');
+        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, '<');
 
         for ($i = 1; $i <= $pagesCount; $i++) {
             $active = $currentPage != $i;
             $this->buttons[] = new Button($i, $active);
         }
 
-        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, '>>');
+        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, '>');
     }
 }

@@ -49,11 +49,9 @@ $options = new Pagination([
     'itemsPerPage' => $numberOfCategories,
     'currentPage' => $p
 ]);
-
 ?>
-<div>
-    <a href="?page=category&p=<?=$p?>&id=0">Добавить категорию</a>
-
+<div class="left_side">
+    <a href="?page=category&p=<?=$p?>&id=0" class="button">Добавить категорию</a>
     <!-- Получения данных для редактирования категорий -->
     <?php
     if (isset($id)) {
@@ -64,44 +62,49 @@ $options = new Pagination([
         }
         ?>
 
-        <!-- Форма добавления категорий -->
-        <form action="?page=category&p=<?=$p?>" method="post">
-            <input type="hidden" name="id" value="<?=$id?>">
-            <input type="text" value="<?=$title?>" placeholder="Название категории" name="title">
-            <input type="submit" name="<?php
-            if ($id == 0) {
-                echo 'save';
-            } else {
-                echo 'rename';
-            }
-            ?>" value="Сохранить">
-        </form>
-
+        <div class="form">
+            <!-- Форма добавления категорий -->
+            <form action="?page=category&p=<?=$p?>" method="post">
+                <input type="hidden" name="id" value="<?=$id?>">
+                <input type="text" value="<?=$title?>" placeholder="Название категории" name="title" class="field">
+                <input type="submit" name="<?php
+                if ($id == 0) {
+                    echo 'save';
+                } else {
+                    echo 'rename';
+                }
+                ?>" value="Сохранить" class="button">
+            </form>
+        </div>
     <?php } ?>
-
-    <!-- Вывод выборки категорий -->
-    <ul>
-    <?php while ($category = mysqli_fetch_assoc($categoryResult)) { ?>
-        <li>
-            <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>">
-                <?=$category['id']?>: <?=$category['title']?>
-            </a>
-            <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>&delete=<?=$category['id']?>">
-                Удалить
-            </a>
-        </li>
-    <?php } ?>
-    </ul>
 </div>
 
-<!-- Вывод пагинации -->
-<div>
-    <?php
-    foreach ($options->buttons as $button){
-        if ($button->isActive){ ?>
-            <a href = '?page=category&p=<?=$button->page?>'><?=$button->text?></a>
-        <?php } else {?>
-            <span style="color:#555555"><?=$button->text?></span>
-        <?php }
-        } ?>
+<div class="right_side">
+    <!-- Вывод выборки категорий -->
+    <div>
+        <ul>
+        <?php while ($category = mysqli_fetch_assoc($categoryResult)) { ?>
+            <li>
+                <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>" class="row">
+                    <!--<?=$category['id']?>: --><?=$category['title']?>
+                </a>
+                <a href="?page=category&p=<?=$p?>&id=<?=$category['id']?>&delete=<?=$category['id']?>">
+                    Удалить
+                </a>
+            </li>
+        <?php } ?>
+        </ul>
+    </div>
+
+    <!-- Вывод пагинации -->
+    <div class="pagination">
+        <?php
+        foreach ($options->buttons as $button){
+            if ($button->isActive){ ?>
+                <a href = '?page=category&p=<?=$button->page?>' class="pagination_but1"><?=$button->text?></a>
+            <?php } else {?>
+                <span class="pagination_but2 active"><?=$button->text?></span>
+            <?php }
+            } ?>
+    </div>
 </div>
