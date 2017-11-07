@@ -4,6 +4,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="./style/style.css">
+    <title>Магазин</title>
 </head>
 <body>
 <header>
