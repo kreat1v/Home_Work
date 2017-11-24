@@ -87,14 +87,11 @@ $options = new Pagination([
                 <input type="text" value="<?=$title?>" placeholder="Название товара" name="title" class="field">
                 <input type="text" value="<?=$price?>" placeholder="Цена товара" name="price" class="field">
                 <select name="category_id" class="select" required>
-                    <?php if ($id > 0) { ?>
-                        <option value="<?=$categoryId?>" class="field" style="padding: 20px"><?=$categoryName['title']?></option>
-                    <?php } ?>
                     <?php
                         $categoryResult = categoryList();
                         while ($category = mysqli_fetch_assoc($categoryResult)){
                     ?>
-                            <option value="<?=$category['id']?>" class="field"><?=$category['title']?></option>
+                            <option value="<?=$category['id']?>" class="field" <?= $category['id'] == $categoryId ? 'selected' : ''?>><?=$category['title']?></option>
                     <?php } ?>
                 </select>
                 <input type="submit" name="<?php

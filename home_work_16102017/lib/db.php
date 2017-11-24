@@ -19,17 +19,29 @@ $tablesMap = [
     'admins' => 'admins'
 ];
 
+//function login($login, $password)
+//{
+//    global $connection;
+//
+//    $result = mysqli_query($connection, "SELECT * FROM {$GLOBALS['tablesMap']['admins']};");
+//    while ($authorization = mysqli_fetch_assoc($result)){
+//        if ($authorization['login'] === $login && $authorization['password'] === $password) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
 function login($login, $password)
 {
-    global $connection;
+	global $connection;
 
-    $result = mysqli_query($connection, "SELECT * FROM {$GLOBALS['tablesMap']['admins']};");
-    while ($authorization = mysqli_fetch_assoc($result)){
-        if ($authorization['login'] === $login && $authorization['password'] === $password) {
-            return true;
-        }
-    }
-    return false;
+	$result = mysqli_query($connection, "SELECT * FROM {$GLOBALS['tablesMap']['admins']} WHERE login = $login");
+	$authorization = mysqli_fetch_assoc($result);
+	if ($authorization['password'] === $password) {
+		return true;
+	}
+	return false;
 }
 
 // Получение списка
