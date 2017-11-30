@@ -1,5 +1,4 @@
 <?php
-
 // Обработка данных из формы
 if (isset($_POST['save']) || isset($_POST['rename'])) {
     $id = $_POST['id'];
