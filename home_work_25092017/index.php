@@ -1,5 +1,4 @@
 <?php
-
 // манипуляция с куками
 $visits_count = isset($_COOKIE['visits_count']) ? (int)$_COOKIE['visits_count'] : 0;
 $visits_count++;
