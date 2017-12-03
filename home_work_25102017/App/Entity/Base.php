@@ -10,7 +10,7 @@ abstract class Base
 
 	public function __construct(Connection $newConnection)
 	{
-		$this->connection = $newConnection->get();
+		$this->connection = $newConnection;
 	}
 
 	/**
@@ -83,7 +83,6 @@ abstract class Base
 		    $where = ' WHERE id = '.$id;
 	    }
 
-	    return mysqli_query($this->connection->getConnection(), "SELECT * FROM $tableName $where;");
 	    return $this->connection->query("SELECT * FROM $tableName $where;");
     }
 
@@ -103,7 +102,7 @@ abstract class Base
 			$where = ' WHERE category_id = '.$categoryId;
 		}
 
-		return mysqli_query($this->connection->getConnection(), "SELECT * FROM $tableName $where LIMIT $limit OFFSET $limitStart;");
+		return $this->connection->query("SELECT * FROM $tableName $where LIMIT $limit OFFSET $limitStart;");
 	}
 
 	/**
@@ -121,7 +120,7 @@ abstract class Base
 			$where = ' WHERE category_id = '.$categoryId;
 		}
 
-		$result = mysqli_fetch_assoc(mysqli_query($this->connection->getConnection(), "SELECT COUNT(*) as count FROM $tableName $where;"));
+		$result = mysqli_fetch_assoc($this->connection->query("SELECT COUNT(*) as count FROM $tableName $where;"));
 		return $result['count'];
 	}
 
@@ -138,12 +137,12 @@ abstract class Base
 	    $tableName = $this->getTableName();
 
     	foreach ($data as &$val){
-		    $values = mysqli_escape_string($this->connection->getConnection(), $val);
+		    $values = mysqli_escape_string($this->connection, $val);
 	    }
 
 	    $cols = implode(',', array_keys($data));
 	    $values = "'".implode("','", $data)."'";
-	    return mysqli_query($this->connection->getConnection(), "INSERT INTO $tableName ($cols) VALUES ($values);");
+	    return $this->connection->query("INSERT INTO $tableName ($cols) VALUES ($values);");
     }
 
     /**
@@ -160,13 +159,13 @@ abstract class Base
 	    $tableName = $this->getTableName();
 
 	    foreach ($data as $key => &$val){
-		    $val = mysqli_escape_string($this->connection->getConnection(), $val);
+		    $val = mysqli_escape_string($this->connection, $val);
 		    $values[] = "$key = '$val'";
 	    }
 
 	    $values = implode(',', $values);
 
-	    return mysqli_query($this->connection->getConnection(), "UPDATE $tableName SET $values WHERE id = $id;");
+	    return $this->connection->query("UPDATE $tableName SET $values WHERE id = $id;");
     }
 
     /**
@@ -179,6 +178,6 @@ abstract class Base
     {
 	    $tableName = $this->getTableName();
 
-	    return mysqli_query($this->connection->getConnection(), "DELETE FROM $tableName WHERE id = $id;");
+	    return $this->connection->query("DELETE FROM $tableName WHERE id = $id;");
     }
 }
