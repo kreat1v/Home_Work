@@ -225,3 +225,7 @@ h3 {
     border: 1px solid #5a5a5a;
     color: #5a5a5a;
 }
+
+.messages {
+    margin: 20px 25px 25px;
+}

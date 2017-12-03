@@ -8,7 +8,8 @@ class Config
 			'dbHost' => 'localhost',
 			'dbUser' => 'goods',
 			'dbPassword' => 'goods',
-			'dbName' => 'goods'
+			'dbName' => 'goods',
+			'amountOfElements' => 5,
 	];
 
 	public static function get($paramName)

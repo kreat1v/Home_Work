@@ -29,20 +29,20 @@ abstract class Base
      *
      * @return array
      */
-//    abstract public function getMap(): array;
-    public function getMap()
-    {
-	    $tableName = $this->getTableName();
-
-	    $result = $this->connection->query("SHOW COLUMNS FROM $tableName;");
-
-	    while ($a = mysqli_fetch_assoc($result)){
-		    $arr[$a['Field']] = $a['Type'];
-	    }
-
-	    unset($arr['id']);
-	    return $arr;
-    }
+    abstract public function getMap(): array;
+//    public function getMap()
+//    {
+//	    $tableName = $this->getTableName();
+//
+//	    $result = $this->connection->query("SHOW COLUMNS FROM $tableName;");
+//
+//	    while ($a = mysqli_fetch_assoc($result)){
+//		    $arr[$a['Field']] = $a['Type'];
+//	    }
+//
+//	    unset($arr['id']);
+//	    return $arr;
+//    }
 
     /**
      * Этот метод вызываем перед каждым обновлением/добавлением,
@@ -59,7 +59,7 @@ abstract class Base
 		$arr = $this->getMap();
 
 		foreach ($data as $key => $value){
-			if ($arr[$key] == gettype($value)) {
+			if ($arr[$key] != gettype($value)) {
 				throw new \Exception('Не соответствие типов данных!');
 			}
 		}
@@ -124,20 +124,22 @@ abstract class Base
 		return $result['count'];
 	}
 
-    /**
-     * В этом методе создаем новую запись в таблице getTableName.
-     * Перед созданием проверяем корректность данных вызовом метода checkFields.
-     *
-     * @param array $data
-     * @return bool|\mysqli_result
-     */
-    public function create(array $data)
+	/**
+	 * В этом методе создаем новую запись в таблице getTableName.
+	 * Перед созданием проверяем корректность данных вызовом метода checkFields.
+	 *
+	 * @param array $data
+	 *
+	 * @return bool|\mysqli_result
+	 * @throws \Exception
+	 */
+	public function create(array $data)
     {
 	    $this->checkFields($data);
 	    $tableName = $this->getTableName();
 
     	foreach ($data as &$val){
-		    $values = mysqli_escape_string($this->connection, $val);
+		    $val = mysqli_escape_string($this->connection->get(), $val);
 	    }
 
 	    $cols = implode(',', array_keys($data));
@@ -152,6 +154,7 @@ abstract class Base
      * @param int $id
      * @param array $data
      * @return bool|\mysqli_result
+     * @throws \Exception
      */
     public function update(int $id, array $data)
     {
@@ -159,7 +162,7 @@ abstract class Base
 	    $tableName = $this->getTableName();
 
 	    foreach ($data as $key => &$val){
-		    $val = mysqli_escape_string($this->connection, $val);
+		    $val = mysqli_escape_string($this->connection->get(), $val);
 		    $values[] = "$key = '$val'";
 	    }
 

@@ -4,6 +4,7 @@ use App\Entity\Product;
 use App\Entity\Category;
 use App\Components\Pagination;
 use App\DB\Connection;
+use App\Main\Config;
 
 $new = Connection::getInstance();
 $newProduct = new Product($new);
@@ -19,17 +20,22 @@ if (isset($_POST['save']) || isset($_POST['rename'])) {
 
     if (strlen($title) && strlen($price)) {
         $data['title'] = $title;
-        $data['price'] = $price;
-        $data['category_id'] = $categoryId;
+        $data['price'] = (int) $price;
+        $data['category_id'] = (int) $categoryId;
     }
 
-    if (!empty($data)) {
-        if ($id > 0) {
-            $result = $newProduct->update($id, $data);
-        } else {
-            $result = $newProduct->create($data);
+	if (!empty($data)) {
+        try {
+            if ($id > 0) {
+                $result = $newProduct->update($id, $data);
+            } else {
+                $result = $newProduct->create($data);
+            }
+        } catch (Exception $e) {
+            $messages = $e->getMessage();
         }
-    }
+	}
+
 }
 
 $id = $_GET['id'];
@@ -44,12 +50,12 @@ if (isset($_GET['delete'])) {
 // Реализация пагинации
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 
-$numberOfProducts = 5;
+$numberOfProducts = Config::get('amountOfElements');
 $limitStart = $p*$numberOfProducts - $numberOfProducts;
 $productResult = $newProduct->getSection($numberOfProducts, $limitStart, $_GET['category_id']);
 $lastPage = ceil($newProduct->getCount($_GET['category_id'])/$numberOfProducts);
 
-if ($p > $lastPage) {
+if ($p > $lastPage && $newProduct->getCount() != 0) {
     header("Location: ?page=product&category_id={$_GET['category_id']}&p=$lastPage");
 }
 
@@ -186,5 +192,12 @@ $options = new Pagination([
             }
         }?>
     </div>
+</div>
 
+<div class="messages">
+	<?php
+	if (!empty($messages)) {
+		echo $messages;
+	}
+	?>
 </div>

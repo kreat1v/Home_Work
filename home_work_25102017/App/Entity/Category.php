@@ -10,4 +10,13 @@ class Category extends Base
     {
         return $this->tableName;
     }
+
+	public function getMap(): array
+	{
+		$fields = [
+			'title' => 'string',
+			'description' => 'string',
+		];
+		return $fields;
+	}
 }

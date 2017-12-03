@@ -10,4 +10,15 @@ class Product extends Base
 	{
 		return $this->tableName;
 	}
+
+	public function getMap(): array
+	{
+		$fields = [
+			'title' => 'string',
+			'price' => 'integer',
+			'description' => 'string',
+			'category_id' => 'integer'
+		];
+		return $fields;
+	}
 }

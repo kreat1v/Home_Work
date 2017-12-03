@@ -3,6 +3,7 @@
 use App\Entity\Category;
 use App\Components\Pagination;
 use App\DB\Connection;
+use App\Main\Config;
 
 $new = Connection::getInstance();
 $newCategory = new Category($new);
@@ -18,11 +19,15 @@ if (isset($_POST['save']) || isset($_POST['rename'])) {
     }
 
     if (!empty($data)) {
-        if ($id > 0) {
-            $result = $newCategory->update($id, $data);
-        } else {
-            $result = $newCategory->create($data);
-        }
+	    try {
+		    if ($id > 0) {
+			    $result = $newCategory->update($id, $data);
+		    } else {
+			    $result = $newCategory->create($data);
+		    }
+	    } catch (Exception $e) {
+		    $messages = $e->getMessage();
+	    }
     }
 }
 
@@ -38,7 +43,7 @@ if (isset($_GET['delete'])) {
 // Реализация пагинации
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 
-$numberOfCategories = 5;
+$numberOfCategories = Config::get('amountOfElements');
 $limitStart = $p*$numberOfCategories - $numberOfCategories;
 $categoryResult = $newCategory->getSection($numberOfCategories, $limitStart);
 $lastPage = ceil($newCategory->getCount()/$numberOfCategories);
@@ -47,7 +52,7 @@ if (isset($_POST['save']) || $p > $lastPage) {
     header("Location: ?page=category&p=$lastPage");
 }
 
-if ($p < 1) {
+if ($p < 1 && $newCategory->getCount() != 0) {
     header("Location: ?page=category&p=1");
 }
 
@@ -114,4 +119,12 @@ $options = new Pagination([
             <?php }
             } ?>
     </div>
+</div>
+
+<div class="messages">
+	<?php
+	if (!empty($messages)) {
+		echo $messages;
+	}
+	?>
 </div>
