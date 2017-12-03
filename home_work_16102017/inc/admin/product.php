@@ -40,7 +40,8 @@ $limitStart = $p*$numberOfProducts - $numberOfProducts;
 $productResult = productSection($numberOfProducts, $limitStart, $_GET['category_id']);
 $lastPage = ceil(productCount($_GET['category_id'])/$numberOfProducts);
 
-if ($p > $lastPage) {
+
+if ($p > $lastPage && productCount() != 0) {
     header("Location: ?page=product&category_id={$_GET['category_id']}&p=$lastPage");
 }
 

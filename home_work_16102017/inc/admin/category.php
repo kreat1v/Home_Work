@@ -40,7 +40,7 @@ if (isset($_POST['save']) || $p > $lastPage) {
     header("Location: ?page=category&p=$lastPage");
 }
 
-if ($p < 1) {
+if ($p < 1 && categoryCount() != 0) {
     header("Location: ?page=category&p=1");
 }
 
