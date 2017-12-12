@@ -227,5 +227,6 @@ h3 {
 }
 
 .messages {
-    margin: 20px 25px 25px;
+    clear: both;
+    margin: 250px 25px 25px 0;
 }

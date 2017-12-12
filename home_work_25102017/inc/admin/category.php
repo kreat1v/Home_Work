@@ -46,18 +46,19 @@ $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $numberOfCategories = Config::get('amountOfElements');
 $limitStart = $p*$numberOfCategories - $numberOfCategories;
 $categoryResult = $newCategory->getSection($numberOfCategories, $limitStart);
-$lastPage = ceil($newCategory->getCount()/$numberOfCategories);
+$categoryCount = $newCategory->getCount();
+$lastPage = ceil($categoryCount/$numberOfCategories);
 
 if (isset($_POST['save']) || $p > $lastPage) {
     header("Location: ?page=category&p=$lastPage");
 }
 
-if ($p < 1 && $newCategory->getCount() != 0) {
+if ($p < 1 && $categoryCount != 0) {
     header("Location: ?page=category&p=1");
 }
 
 $options = new Pagination([
-    'itemsCount' => $newCategory->getCount(),
+    'itemsCount' => $categoryCount,
     'itemsPerPage' => $numberOfCategories,
     'currentPage' => $p
 ]);

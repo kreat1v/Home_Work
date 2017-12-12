@@ -53,25 +53,26 @@ $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $numberOfProducts = Config::get('amountOfElements');
 $limitStart = $p*$numberOfProducts - $numberOfProducts;
 $productResult = $newProduct->getSection($numberOfProducts, $limitStart, $_GET['category_id']);
-$lastPage = ceil($newProduct->getCount($_GET['category_id'])/$numberOfProducts);
+$productCount = $newProduct->getCount($_GET['category_id']);
+$lastPage = ceil($productCount/$numberOfProducts);
 
 if ($p > $lastPage && $newProduct->getCount() != 0) {
     header("Location: ?page=product&category_id={$_GET['category_id']}&p=$lastPage");
 }
 
-if (isset($_POST['save'])) {
-    $lastPage = ceil($newProduct->getCount($_POST['category_id'])/$numberOfProducts);
+if (isset($_POST['save']) && empty($messages)) {
+    $lastPage = ceil($productCount/$numberOfProducts);
     header("Location: ?page=product&category_id={$_POST['category_id']}&p=$lastPage");
-} elseif ($_POST['category_id']){
+} elseif ($_POST['category_id'] && empty($messages)){
     header("Location: ?page=product&category_id={$_POST['category_id']}");
 }
 
-if (isset($_POST['rename'])) {
+if (isset($_POST['rename']) && empty($messages)) {
     header("Location: ?page=product&category_id={$_GET['category_id']}&p=$p");
 }
 
 $options = new Pagination([
-    'itemsCount' => $newProduct->getCount($_GET['category_id']),
+    'itemsCount' => $productCount,
     'itemsPerPage' => $numberOfProducts,
     'currentPage' => $p
 ]);
