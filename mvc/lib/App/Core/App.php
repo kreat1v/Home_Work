@@ -13,6 +13,17 @@ class App
 	/** @var DB\IConnection */
 	private static $conn;
 
+	/** @var Session */
+	private static $session;
+
+	/**
+	 * @return Session
+	 */
+	public static function getSession(): Session
+	{
+		return self::$session;
+	}
+
 	/**
 	 * @return Router
 	 */
@@ -35,6 +46,7 @@ class App
 	 */
 	public static function run($uri)
 	{
+		// Подключение к базе данных.
 		static::$conn = new Connection(
 			Config::get('db.host'),
 			Config::get('db.user'),
@@ -42,7 +54,11 @@ class App
 			Config::get('db.name')
 		);
 
+		// Получаем экземпляр класса Router.
 		static::$router = new Router($uri);
+
+		// Получаем экземпляр класса Session.
+		static::$session = Session::getInstance();
 
 		$route = static::$router->getRoute();
 		$className = static::$router->getController();

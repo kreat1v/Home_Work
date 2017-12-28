@@ -1,9 +1,6 @@
-<?php
-// роутер - разбор строки
+<?php // Роутер - разбор строки.
 
 namespace App\Core;
-
-use App\Core\Config;
 
 class Router
 {
@@ -54,15 +51,23 @@ class Router
 		return $this->params;
 	}
 
+	/**
+	 * Router constructor.
+	 *
+	 * @param string $uri
+	 */
 	public function __construct(string $uri)
 	{
+		// Получаем default настройки.
 		$this->controller = Config::get('defaultController');
 		$this->action = Config::get('defaultAction');
 		$this->route = Config::get('defaultRoute');
 		$this->lang = Config::get('defaultLanguage');
 
+		// Получаем запрос из адрессной строки в виде массива.
 		$parts = parse_url($uri);
 
+		// Получаем массив параметров.
 		$pathParts = explode(
 			'/',
 			trim($parts['path'], '/')
@@ -100,7 +105,7 @@ class Router
 		$parts = array_reverse(explode('.', $path));
 		$default = [
 			Config::get('defaultAction'),
-			$this->getController(true),
+			strtolower($this->getController(true)),
 			$this->getRoute() !== Config::get('defaultRoute') ? $this->getRoute() : '',
 			$this->getLang() !== Config::get('defaultLanguage') ? $this->getLang() : ''
 		];
@@ -119,5 +124,15 @@ class Router
 		$result = array_filter($result);
 
 		return '/' . implode('/', array_reverse($result)) . $paramsString;
+	}
+
+	/**
+	 * @param $uri
+	 * @param int $status
+	 */
+	public function redirect($uri, $status = 302)
+	{
+		header('Location: ' . $uri, true, $status);
+		die;
 	}
 }
