@@ -53,6 +53,6 @@
 	 public function page404()
 	 {
 	 	header('HTTP/1.1 404 Not Found');
-	 	$this->template = ROOT.DS.'views'.DS.'pages'.DS.'404.php';
+	 	$this->template = ROOT.DS.'views'.DS.'404.php';
 	 }
  }

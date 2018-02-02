@@ -1,4 +1,38 @@
+body {
+    padding-top: 2.5rem;
+    background-color: #f4f4f4;
+}
+
 .main {
     margin-top: 100px;
     margin-bottom: 20px;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+/* Левое навигационное меню админки */
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: 1px solid #eee;
+}
+
+.sidebar .nav-link {
+    border-radius: 0;
+}
+
+.sidebar .nav {
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: 70px;
 }

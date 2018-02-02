@@ -17,7 +17,8 @@ class Router
 	/**
 	 * @return mixed
 	 */
-	public function getLang() {
+	public function getLang()
+	{
 		return $this->lang;
 	}
 
@@ -25,7 +26,8 @@ class Router
 	 * @param $clean
 	 * @return mixed
 	 */
-	public function getController($clean = false) {
+	public function getController($clean = false)
+	{
 		return $this->controller . (!$clean ? 'Controller' : '');
 	}
 
@@ -33,21 +35,24 @@ class Router
 	 * @param $clean
 	 * @return mixed
 	 */
-	public function getAction($clean = false) {
+	public function getAction($clean = false)
+	{
 		return $this->action . (!$clean ? 'Action' : '');
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getRoute() {
+	public function getRoute()
+	{
 		return $this->route;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getParams(): array {
+	public function getParams(): array
+	{
 		return $this->params;
 	}
 

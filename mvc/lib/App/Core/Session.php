@@ -14,7 +14,7 @@ class Session
 		session_start();
 	}
 
-	protected function destroy()
+	public function destroy()
 	{
 		session_destroy();
 	}
@@ -42,6 +42,8 @@ class Session
 	{
 		if (isset($_SESSION[$key])) {
 			return $_SESSION[$key];
+		} else {
+			return false;
 		}
 	}
 

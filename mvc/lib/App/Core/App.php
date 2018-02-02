@@ -80,6 +80,30 @@ class App
 		/** @var \App\Controllers\Base $controller */
 		$controller = new $controllerName($params);
 
+		// Если юзер не админ, то админский раздел не доступен.
+		if ($route == 'admin' && static::getSession()->get('role') != 'admin') {
+			static::getRouter()->redirect(static::getRouter()->buildUri('default.pages.index'));
+		}
+
+		// Если сессия активна, то страницы с формой регистрации и логина не доступны.
+		if (static::getSession()->get('id') && (static::getRouter()->getAction(true) == 'register' || static::getRouter()->getAction(true) == 'login')) {
+			static::getRouter()->redirect(static::getRouter()->buildUri('pages.index'));
+		}
+
+		// Если контроллер User и сессия не активна, то доступны только страницы с формами входа и регистрации.
+		if (static::getRouter()->getController(true) == 'User' && !App::getSession()->get('id')) {
+			if (static::getRouter()->getAction(true) != 'register' && static::getRouter()->getAction(true) != 'login') {
+				static::getRouter()->redirect(static::getRouter()->buildUri('default.user.login'));
+			}
+		}
+
+		// Если контроллер Contacts и сессия не активна - доступна страница только с формой для сообщений.
+		if (static::getRouter()->getController(true) == 'Contacts' && !App::getSession()->get('id')) {
+			if (static::getRouter()->getAction(true) != 'index') {
+				static::getRouter()->redirect(static::getRouter()->buildUri('contacts.index'));
+			}
+		}
+
 		if (!method_exists($controller, $action)) {
 			throw new \Exception('Action '.$action.' not found in '.$controllerName);
 		}

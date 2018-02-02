@@ -11,7 +11,8 @@ class PagesController extends Base
 	/** @var Page */
 	private $pageModel;
 
-	public function __construct($params = []) {
+	public function __construct($params = [])
+	{
 		parent::__construct($params);
 
 		$this->pageModel = new Page(App::getConnection());
@@ -22,10 +23,11 @@ class PagesController extends Base
 		$this->data = $this->pageModel->list(['active' => 1]);
 	}
 
-	public function viewAction() {
-		$page = $this->pageModel->getById($this->params[0]);
+	public function viewAction()
+	{
+		$page = $this->pageModel->getBy('id', $this->params[0]);
 
-		if (!empty($page) || !$page['active']) {
+		if (!empty($page) && $page['active']) {
 			$this->data = $page;
 		} else {
 			$this->page404();

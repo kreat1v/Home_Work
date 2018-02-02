@@ -1,4 +1,0 @@
-<?php
-
-?>
-Contacts page content

@@ -15,7 +15,7 @@ try {
 	if (App\Core\Config::get('debug')) {
 		echo '<pre>', var_export($e, 1), '</pre>';
 	} else {
-
+//		\App\Core\App::getRouter()->redirect(App\Core\App::getRouter()->buildUri('default.404'));
 
 		echo 'Something gone wrong...';
 

@@ -10,19 +10,19 @@ abstract class Base
 	/**
 	 * @return mixed
 	 */
-	abstract function getTableName();
+	abstract public function getTableName();
 
 	/**
 	 * @param $data
 	 *
 	 * @return mixed
 	 */
-	abstract function checkFields($data);
+	abstract public function checkFields($data);
 
 	/**
 	 * @return mixed
 	 */
-	abstract function getFields();
+	abstract public function getFields();
 
 	/**
 	 * Base constructor.
@@ -64,13 +64,16 @@ abstract class Base
 	}
 
 	/**
-	 * @param $id
+	 * Получаем данные из БД.
 	 *
-	 * @return mixed
+	 * @param $where
+	 * @param $value
+	 *
+	 * @return null
 	 */
-	public function getById($id)
+	public function getBy($where, $value)
 	{
-		$sql = 'SELECT * FROM ' .  $this->getTableName() . ' WHERE id = ' . $this->conn->escape($id) . ' LIMIT 1';
+		$sql = 'SELECT * FROM ' .  $this->getTableName() . ' WHERE ' . $where . ' = ' . $this->conn->escape($value) . ' LIMIT 1';
 		$result = $this->conn->query($sql);
 
 		return isset($result[0]) ? $result[0] : null;

@@ -11,7 +11,8 @@ class PagesController extends \App\Controllers\Base
 	/** @var Page */
 	private $pageModel;
 
-	public function __construct($params = []) {
+	public function __construct($params = [])
+	{
 		parent::__construct($params);
 
 		$this->pageModel = new Page(App::getConnection());
@@ -22,7 +23,8 @@ class PagesController extends \App\Controllers\Base
 		$this->data = $this->pageModel->list();
 	}
 
-	public function editAction() {
+	public function editAction()
+	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
 				$id = isset($this->params[0]) ? $this->params[0] : null;
@@ -43,7 +45,7 @@ class PagesController extends \App\Controllers\Base
 		}
 
 		if (isset($this->params[0]) && $this->params[0] > 0) {
-			$this->data = $this->pageModel->getById($this->params[0]);
+			$this->data = $this->pageModel->getBy('id', $this->params[0]);
 		}
 	}
 
