@@ -19,7 +19,6 @@ class ContactsController extends \App\Controllers\Base
 	public function indexAction()
 	{
 		$this->data = $this->contactsModel->list();
-
 	}
 
 	public function userAction()

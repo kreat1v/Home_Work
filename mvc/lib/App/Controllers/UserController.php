@@ -56,6 +56,7 @@ class UserController extends Base
 				$user = $this->userModel->login($this->data);
 
 				App::getSession()->set('id', $user['id']);
+				App::getSession()->set('name', $user['firstName']);
 				App::getSession()->set('email', $user['email']);
 				App::getSession()->set('role', $user['role']);
 

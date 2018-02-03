@@ -43,38 +43,42 @@ $session = \App\Core\App::getSession();
             <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?=$router->buildUri('admin.pages.index')?>"><?=__('admin_nav.pages_management')?></a>
+                        <a class="nav-link <?php if($router->getController(true) == 'Pages') { ?>active<?php } ?>" href="<?=$router->buildUri('admin.pages.index')?>"><?=__('admin_nav.pages_management')?></a>
                     </li>
                 </ul>
 
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$router->buildUri('admin.contacts.anonymous')?>"><?=__('admin_nav.external_messages')?></a>
+                        <a class="nav-link <?php if($router->getController(true) == 'Contacts' && $router->getAction(true) == 'anonymous') { ?>active<?php } ?>" href="<?=$router->buildUri('admin.contacts.anonymous')?>"><?=__('admin_nav.external_messages')?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$router->buildUri('admin.contacts.user')?>"><?=__('admin_nav.user_messages')?></a>
+                        <a class="nav-link <?php if($router->getController(true) == 'Contacts' && $router->getAction(true) == 'user') { ?>active<?php } ?>" href="<?=$router->buildUri('admin.contacts.user')?>"><?=__('admin_nav.user_messages')?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$router->buildUri('admin.contacts.index')?>"><?=__('admin_nav.all_messages')?></a>
+                        <a class="nav-link <?php if($router->getController(true) == 'Contacts' && $router->getAction(true) == 'index') { ?>active<?php } ?>" href="<?=$router->buildUri('admin.contacts.index')?>"><?=__('admin_nav.all_messages')?></a>
                     </li>
                 </ul>
 
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$router->buildUri('admin.user.index')?>"><?=__('admin_nav.users')?></a>
+                        <a class="nav-link <?php if($router->getController(true) == 'User') { ?>active<?php } ?>" href="<?=$router->buildUri('admin.user.index')?>"><?=__('admin_nav.users')?></a>
                     </li>
                 </ul>
             </nav>
 
             <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-            <?php if ($session->hasFlash()):
-                foreach ($session->getFlash() as $message): ?>
-                    <div class="alert alert-warning">
-                        <?=$message?>
+                <div class="container pt-3">
+                    <div class="row">
+                    <?php if ($session->hasFlash()):
+                        foreach ($session->getFlash() as $message): ?>
+                            <div class="alert alert-warning col-xl-4 col-lg-4 col-md-6 col-12">
+                                <?=$message?>
+                            </div>
+                        <?php endforeach;
+                    endif; ?>
                     </div>
-                <?php endforeach;
-            endif; ?>
-            <?=$data['content']?>
+                    <?=$data['content']?>
+                </div>
             </main>
         </div>
     </div>
