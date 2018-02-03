@@ -19,7 +19,7 @@ Config::set('defaultLanguage', 'ru');
 /**
  * Debug
  */
-Config::set('debug', true);
+Config::set('debug', false);
 
 /**
  * Meta
